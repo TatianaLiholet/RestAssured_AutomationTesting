@@ -24,9 +24,9 @@ public class PartialUpdateBookingTests extends BaseTest {
         jsonObject.put("firstname" , "James" );
         jsonObject.put("lastname" , "Brown" );
 
-        Response patchUpdateResponce = RestAssured.given().auth().preemptive().basic("admin", "password123")
+        Response patchUpdateResponce = RestAssured.given(spec).auth().preemptive().basic("admin", "password123")
                 .contentType(ContentType.JSON).body(jsonObject.toString())
-                .patch("https://restful-booker.herokuapp.com/booking/" + idOfBooking);
+                .patch("/booking/" + idOfBooking);
         patchUpdateResponce.print();
 
         Assert.assertEquals(patchUpdateResponce.getStatusCode(), 200, "The code is wrong");

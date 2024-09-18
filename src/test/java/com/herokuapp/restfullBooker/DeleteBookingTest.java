@@ -11,16 +11,20 @@ public class DeleteBookingTest extends BaseTest {
     public void deleteBooking(){
         Response response = createBooking();
         response.print();
-
         int bookingid = response.jsonPath().getInt("bookingid");
         //Delete booking
 
-        Response deleteResponce = RestAssured.given().auth().preemptive().basic("admin", "password123")
-                .delete("https://restful-booker.herokuapp.com/booking/" + bookingid);
+        Response deleteResponce = RestAssured.given(spec).auth().preemptive().basic("admin", "password123")
+                .delete("/booking/" + bookingid);
         Assert.assertEquals(deleteResponce.getStatusCode(),201, "It wasn't delete");
 
         deleteResponce.print();
 
+       //CheckIfWeDeleteTheBooking
+
+        Response responseCheking = RestAssured.given(spec).get("/booking/" + bookingid);
+        responseCheking.print();
+        Assert.assertEquals(responseCheking.getBody().asString(), "Not Found", "Body should be 'Not Found', but it;s not");
 
     }
 
